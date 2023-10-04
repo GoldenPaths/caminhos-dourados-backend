@@ -27,13 +27,13 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
   
     - name: Restore dependencies
-      run: dotnet restore 
+      run: dotnet restore .\GoldenPaths.sln
       
     - name: Build
-      run: dotnet build  --no-restore --configuration Release
+      run: dotnet build .\GoldenPaths.sln --no-restore --configuration Release
       
     - name: Test
-      run: dotnet test --verbosity normal --logger "trx;LogFileName=test-results.trx"
+      run: dotnet test .\GoldenPaths.sln --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
     # - name: Upload Test Results
     #   uses: actions/upload-artifact@v2
@@ -46,7 +46,7 @@ jobs:
       run: dotnet tool install --global Versionize
 
     - name: Versionize
-      run: versionize
+      run: versionize 
 
     - name: get-version
       id: get-version
