@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  goldenpaths.webapi:
+    image: ${DOCKER_REGISTRY-}goldenpathswebapi
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+
+
