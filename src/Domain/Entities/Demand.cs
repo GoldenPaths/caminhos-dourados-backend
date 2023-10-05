@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public string? Descrption { get; set; }
-        public int MyProperty { get; set; }
         public DateTime RegisterDate { get; set; } = DateTime.Now;
         public DateTime? SolutionDate { get; set; }
 
