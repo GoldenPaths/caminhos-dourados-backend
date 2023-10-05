@@ -9,6 +9,6 @@
         public DateTime BirthDay { get; set; }
         public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-        public IEnumerable<Demand> Demands { get; set; } = Enumerable.Empty<Demand>();
+        public IEnumerable<Demand>? Demands { get; set; }// = Enumerable.Empty<Demand>();
     }
 }

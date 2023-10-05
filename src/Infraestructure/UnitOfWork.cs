@@ -1,10 +1,6 @@
 ﻿using GoldenPaths.Domain.Interfaces.Repositories;
 using GoldenPaths.Infraestructure.Contexts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GoldenPaths.Infraestructure.Repositories;
 
 namespace GoldenPaths.Infraestructure
 {
@@ -15,6 +11,15 @@ namespace GoldenPaths.Infraestructure
         public UnitOfWork(GPContext context)
         {
             _context = context;
+        }
+
+        private IUserRepository? _userRepository;
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                _userRepository ??= new UserRepository(_context); return _userRepository;
+            }
         }
     }
 }

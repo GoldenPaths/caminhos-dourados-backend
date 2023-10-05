@@ -8,5 +8,6 @@ namespace GoldenPaths.Domain.Interfaces.Repositories
 {
     public interface IUnitOfWork
     {
+        IUserRepository UserRepository { get; }
     }
 }

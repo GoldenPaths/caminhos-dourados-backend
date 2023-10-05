@@ -18,15 +18,14 @@ namespace GoldenPaths.WebApi.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreateUser([FromBody, FromForm]AddNewUserDto addNewUserDto)
         {
-            await Task.Delay(1);
+            await _accountManager.Create(addNewUserDto);
             return Ok("User Add");
         }
 
         [HttpPost("Login")]
         public async Task<ActionResult<UserDto>> Login( [FromBody]UserLoginCredentialsDto userLogin)
         {
-            await Task.Delay (1);
-            var user = new UserDto("Jesus Cristo", "jusus.cristo@nazaremail.com", new DateOnly());
+            var user = await _accountManager.Login(userLogin);
             return Ok(user);
         }
             

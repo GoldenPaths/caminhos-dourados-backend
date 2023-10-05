@@ -4,16 +4,19 @@ using GoldenPaths.Infraestructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GoldenPaths.Infraestructure.Contexts.Migrations
+namespace GoldenPaths.Infraestructure.Context.Migrations
 {
     [DbContext(typeof(GPContext))]
-    partial class GPContextModelSnapshot : ModelSnapshot
+    [Migration("20231005015208_InitialMigration2")]
+    partial class InitialMigration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

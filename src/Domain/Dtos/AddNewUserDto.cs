@@ -10,6 +10,6 @@
 
     public record UserLoginCredentialsDto(string Email, string Password);
 
-    public record UserDto(string Name, string Password, DateOnly Birthday);
+    public record UserDto(string Name, string Email, DateTime Birthday);
 
 }

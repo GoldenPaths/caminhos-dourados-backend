@@ -1,4 +1,5 @@
-﻿using GoldenPaths.Infraestructure.Contexts.Mappings;
+﻿using GoldenPaths.Domain.Entities;
+using GoldenPaths.Infraestructure.Contexts.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoldenPaths.Infraestructure.Contexts
@@ -8,6 +9,7 @@ namespace GoldenPaths.Infraestructure.Contexts
         public GPContext(DbContextOptions options): base(options) 
         {
             Database.Migrate();
+            Users = Set<User>();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,5 +23,7 @@ namespace GoldenPaths.Infraestructure.Contexts
             modelBuilder.ApplyConfiguration(new PlaceMap());
             modelBuilder.ApplyConfiguration(new AddressMap());
         }
+
+        public DbSet<User> Users { get; set; }
     }
 }
