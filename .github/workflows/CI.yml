@@ -83,4 +83,4 @@ jobs:
         context: .
         file: ./src/WebApi/Dockerfile
         push: true
-        tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGENAME }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGENAME }}:${{env.GITHUB_RUN_ATTEMPT}}    
+        tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGENAME }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGENAME }}:${{github.run_number}}
