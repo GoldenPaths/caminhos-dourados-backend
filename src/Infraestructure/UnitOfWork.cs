@@ -14,12 +14,10 @@ namespace GoldenPaths.Infraestructure
         }
 
         private IUserRepository? _userRepository;
-        public IUserRepository UserRepository
-        {
-            get
-            {
-                _userRepository ??= new UserRepository(_context); return _userRepository;
-            }
-        }
+        public IUserRepository UserRepository =>_userRepository ??= new UserRepository(_context);
+            
+
+        private IDemandRepository? _demandRepository;
+        public IDemandRepository DemandRepository => _demandRepository ??= new DemandRepository(_context);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace GoldenPaths.Domain.Interfaces.Repositories
 {
-    internal interface IDemandRepository : IBasicRepository<Demand, int>
+    public interface IDemandRepository : IBasicRepository<Demand, int>
     {
     }
 }

@@ -57,7 +57,7 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -69,29 +69,7 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Place",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Place", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Place_Address_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Address",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,13 +78,11 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Descrption = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MyProperty = table.Column<int>(type: "int", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SolutionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PlaceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DemandTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DemandStatusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DemandDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DemandType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DemandStatusId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DemandTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -115,20 +91,12 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                         name: "FK_Demand_DemandStatus_DemandStatusId",
                         column: x => x.DemandStatusId,
                         principalTable: "DemandStatus",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Demand_DemandType_DemandTypeId",
                         column: x => x.DemandTypeId,
                         principalTable: "DemandType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Demand_Place_PlaceId",
-                        column: x => x.PlaceId,
-                        principalTable: "Place",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -148,11 +116,38 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DemandUser_User_UsersId",
+                        name: "FK_DemandUser_Users_UsersId",
                         column: x => x.UsersId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Place",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DemandId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Place", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Place_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Place_Demand_DemandId",
+                        column: x => x.DemandId,
+                        principalTable: "Demand",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -166,12 +161,6 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                 column: "DemandTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Demand_PlaceId",
-                table: "Demand",
-                column: "PlaceId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DemandUser_UsersId",
                 table: "DemandUser",
                 column: "UsersId");
@@ -180,7 +169,13 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                 name: "IX_Place_AddressId",
                 table: "Place",
                 column: "AddressId",
-                unique: true);
+                unique: true,
+                filter: "[AddressId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Place_DemandId",
+                table: "Place",
+                column: "DemandId");
         }
 
         /// <inheritdoc />
@@ -190,22 +185,22 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                 name: "DemandUser");
 
             migrationBuilder.DropTable(
-                name: "Demand");
+                name: "Place");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "Demand");
 
             migrationBuilder.DropTable(
                 name: "DemandStatus");
 
             migrationBuilder.DropTable(
                 name: "DemandType");
-
-            migrationBuilder.DropTable(
-                name: "Place");
-
-            migrationBuilder.DropTable(
-                name: "Address");
         }
     }
 }

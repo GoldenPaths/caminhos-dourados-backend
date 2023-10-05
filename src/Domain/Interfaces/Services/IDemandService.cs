@@ -1,4 +1,5 @@
-﻿using GoldenPaths.Domain.Entities;
+﻿using GoldenPaths.Domain.Dtos;
+using GoldenPaths.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace GoldenPaths.Domain.Interfaces.Services
 {
-    internal interface IDemandService
+    public interface IDemandService
     {
-        Task CreateDemand(Demand demand);
-        Task
+        Task CreateDemand(AddDemandDto demand);
+        Task<IEnumerable<Demand>> GetAll();
     }
 }

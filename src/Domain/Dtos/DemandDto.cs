@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace GoldenPaths.Domain.Dtos
 {
-    public record DemandDto
+    public record AddDemandDto
     {
-        public int Id { get; set; }
-        public string? Descrption { get; set; }
-        public DateTime RegisterDate { get; set; }
+        public string? Description { get; set; }
+        public DateTime DemandDateTime { get; set; } = DateTime.Now;
+
+        public string DemandType { get; set; } = null!;
     }
+
+
 }

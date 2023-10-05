@@ -80,35 +80,27 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("DemandStatusId")
+                    b.Property<DateTime>("DemandDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DemandStatusId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DemandTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Descrption")
+                    b.Property<string>("DemandType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MyProperty")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("PlaceId")
+                    b.Property<Guid?>("DemandTypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("SolutionDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DemandStatusId");
 
                     b.HasIndex("DemandTypeId");
-
-                    b.HasIndex("PlaceId")
-                        .IsUnique();
 
                     b.ToTable("Demand");
                 });
@@ -157,8 +149,11 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AddressId")
+                    b.Property<Guid?>("AddressId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("DemandId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -175,7 +170,10 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[AddressId] IS NOT NULL");
+
+                    b.HasIndex("DemandId");
 
                     b.ToTable("Place");
                 });
@@ -226,40 +224,28 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
 
             modelBuilder.Entity("GoldenPaths.Domain.Entities.Demand", b =>
                 {
-                    b.HasOne("GoldenPaths.Domain.Entities.DemandStatus", "DemandStatus")
+                    b.HasOne("GoldenPaths.Domain.Entities.DemandStatus", null)
                         .WithMany("Demands")
-                        .HasForeignKey("DemandStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DemandStatusId");
 
-                    b.HasOne("GoldenPaths.Domain.Entities.DemandType", "DemandType")
+                    b.HasOne("GoldenPaths.Domain.Entities.DemandType", null)
                         .WithMany("Demands")
-                        .HasForeignKey("DemandTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GoldenPaths.Domain.Entities.Place", "Place")
-                        .WithOne("Demand")
-                        .HasForeignKey("GoldenPaths.Domain.Entities.Demand", "PlaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DemandStatus");
-
-                    b.Navigation("DemandType");
-
-                    b.Navigation("Place");
+                        .HasForeignKey("DemandTypeId");
                 });
 
             modelBuilder.Entity("GoldenPaths.Domain.Entities.Place", b =>
                 {
                     b.HasOne("GoldenPaths.Domain.Entities.Address", "Address")
                         .WithOne("Place")
-                        .HasForeignKey("GoldenPaths.Domain.Entities.Place", "AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GoldenPaths.Domain.Entities.Place", "AddressId");
+
+                    b.HasOne("GoldenPaths.Domain.Entities.Demand", "Demand")
+                        .WithMany()
+                        .HasForeignKey("DemandId");
 
                     b.Navigation("Address");
+
+                    b.Navigation("Demand");
                 });
 
             modelBuilder.Entity("GoldenPaths.Domain.Entities.Address", b =>
@@ -275,11 +261,6 @@ namespace GoldenPaths.Infraestructure.Contexts.Migrations
             modelBuilder.Entity("GoldenPaths.Domain.Entities.DemandType", b =>
                 {
                     b.Navigation("Demands");
-                });
-
-            modelBuilder.Entity("GoldenPaths.Domain.Entities.Place", b =>
-                {
-                    b.Navigation("Demand");
                 });
 #pragma warning restore 612, 618
         }

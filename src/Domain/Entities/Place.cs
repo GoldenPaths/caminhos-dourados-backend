@@ -8,7 +8,7 @@
         public string? Latitude { get; set; }
         public string? Longitude { get; set; }
 
-        public Guid AddressId { get; set; }
+        public Guid? AddressId { get; set; }
         public Address? Address { get; set; }
 
         public Demand? Demand { get; set; }

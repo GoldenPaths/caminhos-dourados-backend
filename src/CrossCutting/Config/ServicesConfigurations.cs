@@ -14,6 +14,7 @@ namespace GoldenPaths.CrossCutting.Config
         public static void AddServiceConfiguration(this IServiceCollection services)
         {
             services.AddScoped<IAccountManager, AccountManager>();
+            services.AddScoped<IDemandService, DemandService>();
         }
     }
 }

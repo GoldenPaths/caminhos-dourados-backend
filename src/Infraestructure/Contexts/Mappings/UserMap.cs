@@ -39,7 +39,6 @@ namespace GoldenPaths.Infraestructure.Contexts.Mappings
         public void Configure(EntityTypeBuilder<DemandType> builder)
         {
             builder.HasKey(x => x.Id);
-
         }
     }
 
