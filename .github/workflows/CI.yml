@@ -42,18 +42,18 @@ jobs:
     #     name: test-results
     #     path: test/UnitTest/TestResults/*.trx
 
-    - name: Add dotnet tool
-      run: dotnet tool install --global Versionize
+    # - name: Add dotnet tool
+    #   run: dotnet tool install --global Versionize
 
-    - name: Versionize
-      run: versionize 
+    # - name: Versionize
+    #   run: versionize 
 
-    - name: get-version
-      id: get-version
-      run: echo "version=$(versionize inspect)" >> $GITHUB_OUTPUT
+    # - name: get-version
+    #   id: get-version
+    #   run: echo "version=$(versionize inspect)" >> $GITHUB_OUTPUT
 
-    - name: git push changelog
-      run: git push --follow-tags
+    # - name: git push changelog
+    #   run: git push --follow-tags
 
   docker:
     runs-on: ubuntu-latest
@@ -83,4 +83,4 @@ jobs:
         context: .
         file: ./src/WebApi/Dockerfile
         push: true
-        tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGENAME }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGENAME }}:${{needs.build.outputs.version}}    
+        tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGENAME }}:latest,${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGENAME }}:${{env.GITHUB_RUN_ATTEMPT}}    

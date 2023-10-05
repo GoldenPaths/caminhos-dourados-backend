@@ -5,10 +5,33 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ConnectionStrings__DefaultConnection=connection string by docker compose
+      - ConnectionStrings__DefaultConnection=Server=mssql_db;Database=GP_db;User Id=sa;Password=StrongPassw0rd;TrustServerCertificate=True
     ports:
       - "80"
       - "443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+      - mssql_db_net 
+    restart: always
+    depends_on:
+      - mssql_db  
+
+  mssql_db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433" # remover portas para impedira acesso externo ao banco de dados
+    volumes:
+      - mssql_volume:/var/opt/mssql
+    environment:
+      SA_PASSWORD: StrongPassw0rd
+      ACCEPT_EULA: Y
+    networks:
+      - mssql_db_net
+
+volumes:
+  mssql_volume:
+
+networks:
+  mssql_db_net:
