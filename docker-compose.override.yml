@@ -7,8 +7,8 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ConnectionStrings__DefaultConnection=Server=mssql_db;Database=GP_db;User Id=sa;Password=StrongPassw0rd;TrustServerCertificate=True
     ports:
-      - "8080:80"
-      - "8081:443"
+      - "8000:80"
+      - "8001:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
